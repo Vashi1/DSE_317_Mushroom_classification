@@ -13,7 +13,7 @@ def lr_kn_classifier_pca(x_tr, x_te, y_tr, y_te):
     print(classification_report(y_te, ypr))
     print("Plotting the Confusion Matrix")
     cormat = confusion_matrix(y_te, ypr)
-    sns.heatmap(cormat, annot=True)
+    sns.heatmap(cormat, annot=True, fmt = 'g')
     plt.savefig("Implementing Logistic Regression Classifier on Data with Dummy Encoding with KNN-Imputation and PCA Feature Selection.png")
     plt.show()
 
@@ -49,7 +49,7 @@ def lr_kn_classifier_pca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
     print("Plotting the Confusion Matrix")
     y_pr = cross_val_predict(lr_cl_kn_pca, x_te, y_te)
     cormat = confusion_matrix(y_te, y_pr)
-    sns.heatmap(cormat, annot=True)
+    sns.heatmap(cormat, annot=True, fmt = 'g')
     plt.savefig("Implementing Logistic Regression Classifier on Data with Dummy Encoding with KNN-Imputation and PCA Feature Selection with K-Fold Cross Validation.png")
     plt.show()
 
@@ -90,6 +90,6 @@ def lr_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     print("Plotting the Confusion Matrix")
     y_pr = cross_val_predict(lr_cl_kn_pca_stratf, x_te, y_te)
     cormat = confusion_matrix(y_te, y_pr)
-    sns.heatmap(cormat, annot=True)
+    sns.heatmap(cormat, annot=True, fmt = 'g')
     plt.savefig("Implementing Logistic Regression Classifier on Data with Dummy Encoding with KNN-Imputation and PCA Feature Selection with Stratified K-Fold Cross Validation.png")
     plt.show()
