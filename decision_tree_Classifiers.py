@@ -10,7 +10,7 @@ from sklearn.model_selection import cross_val_score, StratifiedKFold, KFold, cro
 
 
 def dt_kn_classifier_pca(x_tr, x_te, y_tr, y_te):
-    dt_cl_kn_pca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=None, max_features=None, splitter='best')
+    dt_cl_kn_pca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=10)
     print("Decision Tree Classifier without using any Cross-Validation Technique and PCA Feature Selection")
     dt_cl_kn_pca.fit(x_tr, y_tr)
     ypr = dt_cl_kn_pca.predict(x_te)
@@ -24,7 +24,7 @@ def dt_kn_classifier_pca(x_tr, x_te, y_tr, y_te):
 
 def dt_kn_classifier_pca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    dt_cl_kn_pca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=None, max_features=None, splitter='best')
+    dt_cl_kn_pca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=7)
     print("Decision Tree Classifier with K-Fold Cross-Validation Technique(K = 10) and PCA Feature Extraction")
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average = 'macro')
@@ -60,7 +60,7 @@ def dt_kn_classifier_pca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
 
 def dt_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    dt_cl_kn_pca_stratf = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=None, max_features = None, splitter='best')
+    dt_cl_kn_pca_stratf = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=10, max_features = None, splitter='best')
     print("Decision Tree Classifier with Stratified K-Fold Cross-Validation Technique and PCA Feature Extraction Technique")
     outer_cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average='macro')
@@ -100,7 +100,7 @@ def dt_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
 
 
 def dt_kn_classfifier_kpca(x_tr, x_te, y_tr, y_te):
-    dt_cl_kn_kpca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=None, max_features=None, splitter='best')
+    dt_cl_kn_kpca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=10, max_features=None, splitter='best')
     print("Decision Tree Classifier without using any Cross-Validation Technique with Kernel PCA Feature Selection")
     dt_cl_kn_kpca.fit(x_tr, y_tr)
     ypr = dt_cl_kn_kpca.predict(x_te)
@@ -115,7 +115,7 @@ def dt_kn_classfifier_kpca(x_tr, x_te, y_tr, y_te):
 
 def dt_kn_classifier_kpca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    dt_cl_kn_pca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=None, max_features=None, splitter='best')
+    dt_cl_kn_pca = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=10, max_features=None, splitter='best')
     print("Decision Tree Classifier with K-Fold Cross-Validation Technique(K = 10) with Kernel PCA Feature Selection")
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average = 'macro')
@@ -151,7 +151,7 @@ def dt_kn_classifier_kpca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
 
 def dt_kn_classifier_kpca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    dt_cl_kn_pca_stratf = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=None, max_features = None, splitter='best')
+    dt_cl_kn_pca_stratf = DecisionTreeClassifier(ccp_alpha=0.01, criterion='gini', max_depth=10, max_features = None, splitter='best')
     print("Decision Tree Classifier with Stratified K-Fold Cross-Validation Technique and Kernel PCA Feature Extraction Technique")
     outer_cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average='macro')

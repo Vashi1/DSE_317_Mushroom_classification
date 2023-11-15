@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score, StratifiedKFold, KFold, cross_val_predict
 
 def rft_kn_classifier_pca(x_tr, x_te, y_tr, y_te):
-    rft_cl_kn_pca = RandomForestClassifier(ccp_alpha=0, class_weight='balanced', max_depth=19, max_features='log2', n_estimators=250)
+    rft_cl_kn_pca = RandomForestClassifier(ccp_alpha=0, max_depth=9, max_features='log2', n_estimators=250)
     print("Random Forest Tree Classifier without using any Cross-Validation Technique and PCA Feature Selection")
     rft_cl_kn_pca.fit(x_tr, y_tr)
     ypr = rft_cl_kn_pca.predict(x_te)
