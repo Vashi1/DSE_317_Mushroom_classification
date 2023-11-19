@@ -2,7 +2,7 @@ from sklearn.decomposition import PCA
 
 
 def PCA_data(data_imp):
-    pca = PCA(.95)
+    pca = PCA(10)
     data_pca = pca.fit_transform(data_imp)
     return data_pca
 

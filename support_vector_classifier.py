@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, make_scorer, precision_score, recall_score, f1_score
 import seaborn as sns
@@ -55,25 +56,25 @@ def svc_kn_classifier_pca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
 
 def svc_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    dt_cl_kn_pca_stratf = SVC(C = 1.2, kernel = 'linear', random_state=42)
+    dt_cl_kn_pca_stratf = SVC(C = 1.2, kernel = 'linear', random_state=42, probability=True)
     print("SVC Classifier with Stratified K-Fold Cross-Validation Technique and PCA Feature Extraction Technique")
     outer_cv = StratifiedKFold(n_splits=10, random_state=42, shuffle=True)
     pre_scorer_macro = make_scorer(precision_score, average='macro')
     pre_scorer_weighted = make_scorer(precision_score, average='weighted')
     nested_score_precision_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
-                                                   scoring=pre_scorer_macro)
+                                                   scoring=pre_scorer_macro, n_jobs=-1)
     nested_score_precision_weighted = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
-                                                      scoring=pre_scorer_weighted)
+                                                      scoring=pre_scorer_weighted, n_jobs=-1)
     rec_score_macro = make_scorer(recall_score, average='macro')
     rec_score_weighted = make_scorer(recall_score, average='weighted')
-    nested_score_recall_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=rec_score_macro)
+    nested_score_recall_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=rec_score_macro, n_jobs=-1)
     nested_score_recall_weighted = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
-                                                   scoring=rec_score_weighted)
+                                                   scoring=rec_score_weighted, n_jobs=-1)
     f1_scorer_macro = make_scorer(f1_score, average='micro')
     f1_scorer_weighted = make_scorer(f1_score, average='weighted')
-    nested_score_f1_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=f1_scorer_macro)
+    nested_score_f1_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=f1_scorer_macro, n_jobs=-1)
     nested_score_f1_weighted = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
-                                               scoring=f1_scorer_weighted)
+                                               scoring=f1_scorer_weighted, n_jobs=-1)
     print("Classification Report")
     print(f"\tPrecision Score(Macro): {nested_score_precision_macro.mean():.2f}", )
     print(f"\tPrecision Score(Weighted): {nested_score_precision_weighted.mean():.2f}", )
@@ -84,19 +85,21 @@ def svc_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     print(f"\tF1 Score(Macro): {nested_score_f1_macro.mean():.2f}", )
     print(f"\tF1 Score(Weighted): {nested_score_f1_weighted.mean():.2f}", )
     acc_scorer = make_scorer(accuracy_score)
-    nested_score_acc = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=acc_scorer)
+    nested_score_acc = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=acc_scorer, n_jobs=-1)
     print(f"\tAccuracy Score: {nested_score_acc.mean():.2f}")
     print("Plotting the Confusion Matrix")
-    y_pr = cross_val_predict(dt_cl_kn_pca_stratf, x_te, y_te, cv=outer_cv)
+    y_pr = cross_val_predict(dt_cl_kn_pca_stratf, x_te, y_te, cv=outer_cv, n_jobs=-1)
     cormat = confusion_matrix(y_te, y_pr)
     sns.heatmap(cormat, annot=True, fmt = 'g')
     plt.savefig("Implementing SVC Classifier on Data with Dummy Encoding with KNN-Imputation and PCA Feature Selection with Stratified K-Fold Cross Validation.png")
     print("Plotting the Predict Probability")
+    dt_cl_kn_pca_stratf.fit(x_tr, y_tr)
     predicted_probabilities = dt_cl_kn_pca_stratf.predict_proba(x_te)
-    for i in range(len(predicted_probabilities)):
-        plt.plot(predicted_probabilities[i])
-        plt.show()
-    plt.show()
+    pp_df = pd.DataFrame(predicted_probabilities)
+    pp_df.to_csv("predicted_probabilities.csv")
+    # plt.plot(predicted_probabilities)
+    # plt.show()
+
 
 
 def svc_kn_classifier_kpca(x_tr, x_te, y_tr, y_te):

@@ -62,19 +62,19 @@ def lr_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     pre_scorer_macro = make_scorer(precision_score, average='macro')
     pre_scorer_weighted = make_scorer(precision_score, average='weighted')
     nested_score_precision_macro = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
-                                                   scoring=pre_scorer_macro)
+                                                   scoring=pre_scorer_macro, n_jobs=-1)
     nested_score_precision_weighted = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
-                                                      scoring=pre_scorer_weighted)
+                                                      scoring=pre_scorer_weighted, n_jobs=-1)
     rec_score_macro = make_scorer(recall_score, average='macro')
     rec_score_weighted = make_scorer(recall_score, average='weighted')
-    nested_score_recall_macro = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=rec_score_macro)
+    nested_score_recall_macro = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=rec_score_macro, n_jobs=-1)
     nested_score_recall_weighted = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
                                                    scoring=rec_score_weighted)
     f1_scorer_macro = make_scorer(f1_score, average='micro')
     f1_scorer_weighted = make_scorer(f1_score, average='weighted')
-    nested_score_f1_macro = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=f1_scorer_macro)
+    nested_score_f1_macro = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=f1_scorer_macro, n_jobs=-1)
     nested_score_f1_weighted = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
-                                               scoring=f1_scorer_weighted)
+                                               scoring=f1_scorer_weighted, n_jobs=-1)
     print("Classification Report")
     print(f"\tPrecision Score(Macro): {nested_score_precision_macro.mean():.2f}", )
     print(f"\tPrecision Score(Weighted): {nested_score_precision_weighted.mean():.2f}", )
@@ -85,7 +85,7 @@ def lr_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     print(f"\tF1 Score(Macro): {nested_score_f1_macro.mean():.2f}", )
     print(f"\tF1 Score(Weighted): {nested_score_f1_weighted.mean():.2f}", )
     acc_scorer = make_scorer(accuracy_score)
-    nested_score_acc = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=acc_scorer)
+    nested_score_acc = cross_val_score(lr_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv, scoring=acc_scorer, n_jobs=-1)
     print(f"\tAccuracy Score: {nested_score_acc.mean():.2f}")
     print("Plotting the Confusion Matrix")
     y_pr = cross_val_predict(lr_cl_kn_pca_stratf, x_te, y_te, cv = outer_cv)

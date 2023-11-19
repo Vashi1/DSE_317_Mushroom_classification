@@ -2,7 +2,8 @@
 from sklearn.impute import KNNImputer
 from sklearn.impute import SimpleImputer
 import pandas as pd
-
+import numpy as np
+train_data = pd.read_csv('mushroom_trn_data.csv')
 
 # While calling also specify value of k, otherwise default value of 5 will be taken for k
 def knn_imputer(data_df, k=5):
@@ -10,7 +11,9 @@ def knn_imputer(data_df, k=5):
     data_headers = list(data_df.columns.values)
     data_imp = knn.fit_transform(data_df)
     data_imp_df = pd.DataFrame(data_imp, columns=data_headers)
+    data_imp_df.loc[train_data['stalk-root'].isnull(), data_imp_df.columns.str.startswith("stalk-root_")] = np.nan
     return data_imp_df
+
 
 
 def mean_imputer(data_df):
