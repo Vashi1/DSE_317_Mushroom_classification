@@ -76,11 +76,9 @@ def grid_search_svm(X_train, y_train):
     svc = SVC(random_state=42)
     param_grid_svc = [
         {
-            'C': [1, 1.2,],
+            'C': [1, 1.2, 1.3],
             'kernel': ['linear', 'poly', 'sigmoid'],
-            'gamma': ['scale', 'auto'],
             'shrinking': [True, False],
-            'decision_function_shape': ['ovo', 'ovr']
         }
     ]
     gr_svm = GridSearchCV(svc, param_grid_svc, scoring='accuracy', cv=5, n_jobs=-1)
@@ -90,33 +88,3 @@ def grid_search_svm(X_train, y_train):
     score = cross_val_score(gr_svm, X_train, y_train, scoring='accuracy', cv=5)
     print("Average Accuracy Score: %.4f +/- %.4f" % ((np.mean(score)), np.std(score)))
 
-
-def grid_search_nb(X_train, y_train):
-    nb = CategoricalNB()
-    param_grid_nb = [
-        {
-            'alpha': [1, 1.1, 2.5],
-            'fit_prior': [True, False],
-        }
-    ]
-    gr_nb = GridSearchCV(nb, param_grid_nb, cv=5, scoring='accuracy', n_jobs=-1)
-    gr_nb.fit(X_train, y_train)
-    print("Optimal Naive Bayes Classifier Parameters: \n\n")
-    print(gr_nb.best_params_)
-    score = cross_val_score(gr_nb, X_train, y_train, scoring='accuracy', cv=5)
-    print("Average Accuracy Score: %.4f +/- %.4f" % ((np.mean(score)), np.std(score)))
-
-def grid_search_gb(X_train, y_train):
-    gb = GradientBoostingClassifier(random_state=42)
-    param_grid_gb = [
-        {
-            'loss' : ['log_loss', 'exponential'],
-            'learning_rate' : [0.1, 0.01, 0.02]
-        }
-    ]
-    gr_nb = GridSearchCV(gb, param_grid_gb, cv=5, scoring='accuracy', n_jobs=-1)
-    gr_nb.fit(X_train, y_train)
-    print("Optimal Gradient Boosting Parameters: \n\n")
-    print(gr_nb.best_params_)
-    score = cross_val_score(gr_nb, X_train, y_train, scoring='accuracy', cv=5)
-    print("Average Accuracy Score: %.4f +/- %.4f" % ((np.mean(score)), np.std(score)))

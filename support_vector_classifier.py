@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score, StratifiedKFold, KFold, cross_val_predict
 
 def svc_kn_classifier_pca(x_tr, x_te, y_tr, y_te):
-    rft_cl_kn_pca = SVC()
+    rft_cl_kn_pca = SVC(C = 1.2, kernel = 'linear', random_state=42)
     print("SVC Classifier without using any Cross-Validation Technique and PCA Feature Selection")
     rft_cl_kn_pca.fit(x_tr, y_tr)
     ypr = rft_cl_kn_pca.predict(x_te)
@@ -19,9 +19,9 @@ def svc_kn_classifier_pca(x_tr, x_te, y_tr, y_te):
 
 def svc_kn_classifier_pca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    rft_cl_kn_pca = SVC()
+    rft_cl_kn_pca = SVC(C = 1.2, kernel = 'linear', random_state=42)
     print("SVC Classifier with K-Fold Cross-Validation Technique(K = 10) and PCA Feature Extraction")
-    outer_cv = KFold(n_splits=10, shuffle=True, random_state=42)
+    outer_cv = KFold(n_splits=42, random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average = 'macro')
     pre_scorer_weighted = make_scorer(precision_score, average = 'weighted')
     nested_score_precision_macro = cross_val_score(rft_cl_kn_pca, X=x_data, y=y_data, cv=outer_cv, scoring=pre_scorer_macro)
@@ -55,9 +55,9 @@ def svc_kn_classifier_pca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
 
 def svc_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    dt_cl_kn_pca_stratf = SVC()
+    dt_cl_kn_pca_stratf = SVC(C = 1.2, kernel = 'linear', random_state=42)
     print("SVC Classifier with Stratified K-Fold Cross-Validation Technique and PCA Feature Extraction Technique")
-    outer_cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+    outer_cv = StratifiedKFold(n_splits=10, random_state=42, shuffle=True)
     pre_scorer_macro = make_scorer(precision_score, average='macro')
     pre_scorer_weighted = make_scorer(precision_score, average='weighted')
     nested_score_precision_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
@@ -91,11 +91,16 @@ def svc_kn_classifier_pca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     cormat = confusion_matrix(y_te, y_pr)
     sns.heatmap(cormat, annot=True, fmt = 'g')
     plt.savefig("Implementing SVC Classifier on Data with Dummy Encoding with KNN-Imputation and PCA Feature Selection with Stratified K-Fold Cross Validation.png")
+    print("Plotting the Predict Probability")
+    predicted_probabilities = dt_cl_kn_pca_stratf.predict_proba(x_te)
+    for i in range(len(predicted_probabilities)):
+        plt.plot(predicted_probabilities[i])
+        plt.show()
     plt.show()
 
 
 def svc_kn_classifier_kpca(x_tr, x_te, y_tr, y_te):
-    rft_cl_kn_pca = SVC()
+    rft_cl_kn_pca = SVC(C = 1.2, kernel = 'linear' , random_state=42)
     print("Random Forest Tree Classifier without using any Cross-Validation Technique and Kernel PCA Feature Selection")
     rft_cl_kn_pca.fit(x_tr, y_tr)
     ypr = rft_cl_kn_pca.predict(x_te)
@@ -111,7 +116,7 @@ def svc_kn_classifier_kpca_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
     rft_cl_kn_pca = SVC()
     print("SVC with K-Fold Cross-Validation Technique(K = 10) and Kernel PCA Feature Extraction")
-    outer_cv = KFold(n_splits=10, shuffle=True, random_state=42)
+    outer_cv = KFold(C = 1.2, kernel = 'linear' , random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average = 'macro')
     pre_scorer_weighted = make_scorer(precision_score, average = 'weighted')
     nested_score_precision_macro = cross_val_score(rft_cl_kn_pca, X=x_data, y=y_data, cv=outer_cv, scoring=pre_scorer_macro)
@@ -148,7 +153,7 @@ def svc_kn_classifier_kpca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
     dt_cl_kn_pca_stratf = SVC()
     print("SVC Classifier with Stratified K-Fold Cross-Validation Technique and Kernel PCA Feature Extraction Technique")
-    outer_cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+    outer_cv = StratifiedKFold(C = 1.2, kernel = 'linear' , random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average='macro')
     pre_scorer_weighted = make_scorer(precision_score, average='weighted')
     nested_score_precision_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
@@ -186,7 +191,7 @@ def svc_kn_classifier_kpca_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
 
 
 def svc_kn_classifier_trsvd(x_tr, x_te, y_tr, y_te):
-    rft_cl_kn_pca = SVC()
+    rft_cl_kn_pca = SVC(C = 1.2, kernel = 'linear', random_state=42)
     print("SVC Classifier without using any Cross-Validation Technique and Truncated SVD Feature Selection")
     rft_cl_kn_pca.fit(x_tr, y_tr)
     ypr = rft_cl_kn_pca.predict(x_te)
@@ -201,9 +206,9 @@ def svc_kn_classifier_trsvd(x_tr, x_te, y_tr, y_te):
 
 def svc_kn_classifier_trsvd_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    rft_cl_kn_pca = SVC()
+    rft_cl_kn_pca = SVC(C = 1.2, kernel = 'linear' , random_state=42)
     print("SVC Classifier with K-Fold Cross-Validation Technique(K = 10) and Truncated SVD Feature Extraction")
-    outer_cv = KFold(n_splits=10, shuffle=True, random_state=42)
+    outer_cv = KFold(n_splits=10, random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average = 'macro')
     pre_scorer_weighted = make_scorer(precision_score, average = 'weighted')
     nested_score_precision_macro = cross_val_score(rft_cl_kn_pca, X=x_data, y=y_data, cv=outer_cv, scoring=pre_scorer_macro)
@@ -238,9 +243,9 @@ def svc_kn_classifier_trsvd_kfold(x_data, y_data,x_tr, x_te, y_tr, y_te):
 
 def svc_kn_classifier_trsvd_stratfold(x_data, y_data, x_tr, x_te, y_tr, y_te):
     originalclass, predictedclass = [], []
-    dt_cl_kn_pca_stratf = SVC()
+    dt_cl_kn_pca_stratf = SVC(C = 1.2, kernel = 'linear' , random_state=42)
     print("SVC Classifier with Stratified K-Fold Cross-Validation Technique and Truncated SVD Feature Extraction Technique")
-    outer_cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+    outer_cv = StratifiedKFold(n_splits=10, random_state=42)
     pre_scorer_macro = make_scorer(precision_score, average='macro')
     pre_scorer_weighted = make_scorer(precision_score, average='weighted')
     nested_score_precision_macro = cross_val_score(dt_cl_kn_pca_stratf, X=x_data, y=y_data, cv=outer_cv,
